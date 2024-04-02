@@ -1,0 +1,27 @@
+@charset "UTF-8";
+
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+:root {
+    --font: "Press Start 2P", "Arial", "Helvetica", "Sans-serif";
+}
+
+* {
+    padding: 0px;
+    margin: 0px;
+    box-sizing: border-box;
+}
+
+body {
+    display: grid;
+    place-items: center;
+    height: 100vh;
+    background-color: rgb(44, 44, 44);
+    color: white;
+    font-family: var(--font);
+}
+
+canvas {
+    background-color: black;
+    border: 1px solid white;
+}
