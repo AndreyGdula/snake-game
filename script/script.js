@@ -9,7 +9,7 @@ var score = 1
 const size = 30
 const sound = new Audio("../files/score.mp3")
 
-const snake = [
+let snake = [
     {x: 300, y: 300},
     {x: 330, y: 300}
 ]
@@ -158,6 +158,7 @@ buttonStart.addEventListener('click', () => {
     score = 0
     menuGameover.style.display = "none"
     canvas.style.filter = "blur(0px)"
+    h1.innerHTML = `SCORE: 0`
     snake = [
         {x: 300, y: 300},
         {x: 330, y: 300}
