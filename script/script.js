@@ -1,6 +1,9 @@
 const canvas = document.querySelector("canvas")
 const ctx = canvas.getContext("2d")
 const h1 = document.querySelector("h1")
+const menuGameover = document.querySelector("div.menu-gameover")
+const finalScore = document.querySelector("p.final-score")
+const buttonStart = document.querySelector("button.btn-start")
 
 var score = 1
 const size = 30
@@ -84,10 +87,24 @@ const eatFood = () => {
 
 const collision = () => {
     const head = snake[snake.length - 1]
+    const neckIndex = snake[snake.length - 2]
 
-    if (head.x < 0 || head.x >= canvas.width || head.y < 0 || head.y >= canvas.width) {
-        alert("Derrota")
+    const wallCollision = head.x < 0 || head.x >= canvas.width || head.y < 0 || head.y >= canvas.width
+
+    const snakeCollision = snake.find((position, index) => {
+        return index < neckIndex && position.x == head.x && position.y == head.y
+    })
+
+    if (wallCollision || snakeCollision) {
+        gameover()
     }
+}
+
+const gameover = () => {
+    direction = undefined
+    canvas.style.filter = "blur(5px)"
+    menuGameover.style.display = "flex"
+    finalScore.innerHTML = `SCORE: ${score - 1}`
 }
 
 const drawGrid = () => {
@@ -136,3 +153,13 @@ document.addEventListener('keydown', ({key}) => {
 })
 
 gameLoop()
+
+buttonStart.addEventListener('click', () => {
+    score = 0
+    menuGameover.style.display = "none"
+    canvas.style.filter = "blur(0px)"
+    snake = [
+        {x: 300, y: 300},
+        {x: 330, y: 300}
+    ]
+})
