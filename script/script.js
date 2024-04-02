@@ -1,7 +1,10 @@
 const canvas = document.querySelector("canvas")
 const ctx = canvas.getContext("2d")
+const h1 = document.querySelector("h1")
 
+var score = 1
 const size = 30
+const sound = new Audio("../files/score.mp3")
 
 const snake = [
     {x: 300, y: 300},
@@ -17,11 +20,11 @@ const randomPosition = () => {
     return Math.round(number / 30) * 30
 }
 
-const food = [{
+const food = {
     x: randomPosition(), 
     y: randomPosition(),
     color: "red"
-}]
+}
 
 let direction, loopId
 
@@ -60,6 +63,33 @@ const drawFood = () => {
     ctx.fillRect(food.x, food.y, size, size)
 }
 
+const eatFood = () => {
+    const head = snake[snake.length - 1]
+
+    if (head.x == food.x && head.y == food.y) {
+        snake.push(head)
+        sound.play()
+
+        food.x = randomPosition()
+        food.y = randomPosition()
+
+        h1.innerHTML = `SCORE: ${score++}`
+
+        while (snake.find((position) => position.x == food.x && position.y == food.y)) {
+            food.x = randomPosition()
+            food.y = randomPosition()
+        }
+    }
+}
+
+const collision = () => {
+    const head = snake[snake.length - 1]
+
+    if (head.x < 0 || head.x >= canvas.width || head.y < 0 || head.y >= canvas.width) {
+        alert("Derrota")
+    }
+}
+
 const drawGrid = () => {
     ctx.lineWidth = 1
     ctx.strokeStyle = "#101010"
@@ -85,6 +115,8 @@ const gameLoop = () => {
     drawFood()
     moveSnake()
     drawSnake()
+    eatFood()
+    collision()
 
     loopId = setInterval(() => {
         gameLoop()
