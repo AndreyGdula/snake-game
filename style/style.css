@@ -24,4 +24,6 @@ body {
 canvas {
     background-color: black;
     border: 1px solid white;
+    height: 500px;
+    width: 500px;
 }
