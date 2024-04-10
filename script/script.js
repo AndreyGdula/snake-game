@@ -4,10 +4,17 @@ const h1 = document.querySelector("h1")
 const menuGameover = document.querySelector("div.menu-gameover")
 const finalScore = document.querySelector("p.final-score")
 const buttonStart = document.querySelector("button.btn-start")
+const record = document.querySelector("p.record")
+const buttonUp = document.querySelector("button#up")
+const buttonLeft = document.querySelector("button#left")
+const buttonRight = document.querySelector("button#right") 
+const buttonDown = document.querySelector("button#down")
+const control = document.querySelector("div.control")
 
 const speedGame = 150
 const size = 30
 const sound = new Audio("../files/score.mp3")
+const bestScore = []
 
 let snake = [
     {x: 300, y: 300},
@@ -125,8 +132,11 @@ const drawGrid = () => {
 const gameover = () => {
     direction = undefined
     canvas.style.filter = "blur(5px)"
+    control.style.filter = "blur(5px)"
     menuGameover.style.display = "flex"
     finalScore.innerHTML = `SCORE: ${snake.length - 2}`
+    bestScore.push(snake.length - 2)
+    record.innerHTML = `BEST SCORE: ${Math.max(...bestScore)}`
 }
 
 const gameLoop = () => {
@@ -139,6 +149,7 @@ const gameLoop = () => {
     drawSnake()
     eatFood()
     collision()
+    mobileControl()
 
     loopId = setInterval(() => {
         gameLoop()
@@ -160,11 +171,41 @@ document.addEventListener('keydown', ({key}) => {
 buttonStart.addEventListener('click', () => {
     menuGameover.style.display = "none"
     canvas.style.filter = "blur(0px)"
+    control.style.filter = "blur(0px)"
     h1.innerHTML = `SCORE: 0`
     snake = [
         {x: 300, y: 300},
         {x: 330, y: 300}
     ]
 })
+
+const mobileControl = () => {
+    if (window.innerWidth > 600) {
+        control.style.display = "none"
+    }
+
+    buttonUp.addEventListener('click', () => {
+        if (direction != "down") {
+            direction = "up"
+        }
+    })
+
+    buttonLeft.addEventListener('click', () => {
+        if (direction != "right") {
+            direction = "left"
+        }
+    })
+
+    buttonRight.addEventListener('click', () => {
+        if (direction != "left") {
+            direction = "right"
+        }
+    })
+
+    buttonDown.addEventListener('click', () => {
+        if (direction != "up") {
+            direction = "down"
+        }
+    })}
 
 gameLoop()
